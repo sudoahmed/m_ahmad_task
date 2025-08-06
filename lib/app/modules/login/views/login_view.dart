@@ -130,9 +130,9 @@ class LoginView extends GetView<LoginController> {
                       ),
                     ),
                     onPressed: () {
-                      WaitDialog().callBasicLoaderDialog(
-                          context: context, loaderText: 'Logging in...');
-                      // Get.toNamed(Routes.HOME);
+                      // WaitDialog().callBasicLoaderDialog(
+                      //     context: context, loaderText: 'Logging in...');
+                      Get.toNamed(Routes.HOME);
                     }),
               ],
             ),
