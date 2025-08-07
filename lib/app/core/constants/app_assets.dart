@@ -2,6 +2,10 @@ class AppImages {
   static String nutriLogo = "assets/images/nutri-logo.png";
   static String burrito = "assets/images/burrito.png";
   static String appleCartoon = "assets/images/appleCartoon.gif";
+  static String recipe = "assets/images/recipe.png";
+  static String blog = "assets/images/blog.png";
+  static String favorite = "assets/images/favorite.png";
+  static String nutritionist = "assets/images/nutritionist.png";
 }
 
 class AppIcons {

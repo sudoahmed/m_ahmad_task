@@ -380,7 +380,7 @@ class HomeView extends GetView<HomeController> {
                         final isActive =
                             controller.currentCarouselIndex.value == index;
                         return AnimatedContainer(
-                          duration: Duration(milliseconds: 300),
+                          duration: const Duration(milliseconds: 300),
                           curve: Curves.easeInSine,
                           margin: const EdgeInsets.symmetric(horizontal: 4),
                           width: isActive ? 20 : 8,
@@ -469,14 +469,13 @@ class HomeView extends GetView<HomeController> {
                             physics: const NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
                             gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2),
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                    childAspectRatio: 0.79, crossAxisCount: 2),
                             itemBuilder: (context, index) {
                               return Container(
                                 padding: EdgeInsetsGeometry.all(12.sp),
                                 margin: EdgeInsets.all(8.sp),
                                 width: 160.w,
-                                height: 185.h,
                                 decoration: BoxDecoration(
                                     color: AppColors.white,
                                     borderRadius: BorderRadius.circular(14.r),
@@ -491,8 +490,38 @@ class HomeView extends GetView<HomeController> {
                                       color:
                                           AppColors.hitGray.withOpacity(0.25),
                                     )),
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      padding: EdgeInsets.all(15.sp),
+                                      width: 94.w,
+                                      height: 94.h,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color:
+                                            AppColors.christi.withOpacity(0.4),
+                                      ),
+                                      child: Image.asset(AppImages.recipe),
+                                    ),
+                                    VerticalSpacing(8.h),
+                                    Text(
+                                      'Recipe',
+                                      style: textTheme.titleSmall!.copyWith(
+                                          fontSize: 18.sp,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    Text(
+                                      textAlign: TextAlign.center,
+                                      'Cook, Eat, Log, Repeat',
+                                      style: textTheme.labelSmall!.copyWith(
+                                          fontSize: 11.sp,
+                                          color: AppColors.hitGray),
+                                    )
+                                  ],
+                                ),
                               );
-                            })
+                            }),
+                        VerticalSpacing(32.h),
                       ],
                     ),
                   ),
