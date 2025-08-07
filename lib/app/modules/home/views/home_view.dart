@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:get/get.dart';
+import 'package:m_ahmad_task/app/core/components/dialogs/wait_dialog.dart';
 import 'package:m_ahmad_task/app/core/constants/app_assets.dart';
 import 'package:m_ahmad_task/app/core/constants/colors.dart';
 import 'package:m_ahmad_task/app/core/constants/hive_keys.dart';
@@ -42,6 +43,7 @@ class HomeView extends GetView<HomeController> {
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             log(Get.find<MainBox>().getData<String>(HiveKeys.token).toString());
+            controller.getHomeData();
           },
         ),
         appBar: AppBar(
@@ -57,8 +59,16 @@ class HomeView extends GetView<HomeController> {
               padding: EdgeInsets.zero,
               minSize: 0.0001,
               onPressed: () {
-                Get.find<MainBox>().clearBox().then((_) {
-                  Get.offAllNamed(Routes.LOGIN);
+                WaitDialog().callBasicLoaderDialog(
+                    context: context,
+                    loaderText: 'Logging out...',
+                    isDialogDismissible: false);
+                Future.delayed(const Duration(seconds: 1), () {
+                  Get.find<MainBox>()
+                      .addData<String>(HiveKeys.token, '')
+                      .then((_) {
+                    Get.offAllNamed(Routes.LOGIN);
+                  });
                 });
               },
               child: Container(

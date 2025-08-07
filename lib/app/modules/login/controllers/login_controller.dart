@@ -26,9 +26,11 @@ class LoginController extends GetxController {
       required void Function(dynamic) onSuccess,
       required void Function() onError}) async {
     try {
-      WaitDialog()
-          .callBasicLoaderDialog(context: context, loaderText: 'Logging in...');
-      Get.find<LoginRepository>().login(
+      WaitDialog().callBasicLoaderDialog(
+          context: context,
+          loaderText: 'Logging in...',
+          isDialogDismissible: false);
+      Get.find<LoginRepository>().onLogin(
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
         onSuccess: (responseBody) {

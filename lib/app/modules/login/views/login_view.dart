@@ -134,6 +134,7 @@ class LoginView extends GetView<LoginController> {
                       ),
                     ),
                     onPressed: () {
+                      FocusScope.of(context).unfocus();
                       controller.login(
                         context: context,
                         onSuccess: (responseBody) {},

@@ -18,9 +18,9 @@ class AppPages {
     final mainBox = Get.find<MainBox>();
 
     INITIAL = mainBox.getData(HiveKeys.token) != null ||
-            mainBox.getData(HiveKeys.token) == ''
-        ? _Paths.LOGIN
-        : _Paths.HOME;
+            mainBox.getData(HiveKeys.token) != ''
+        ? _Paths.HOME
+        : _Paths.LOGIN;
   }
 
   static final routes = [

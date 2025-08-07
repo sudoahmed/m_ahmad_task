@@ -77,18 +77,27 @@ class ApiService extends getx.GetxService {
       late final Response response;
 
       if (await checkInternetConnection()) {
-        final options = Options(
-          headers: forceAuth ? await _useAuthHeaderMap() : null,
-          responseType:
-              isBinaryResponse ? ResponseType.bytes : ResponseType.json,
-        );
-
-        response = await dioRequest.get(
-          url,
-          data: bodyData,
-          options: options,
-          onReceiveProgress: uploadingProgress,
-        );
+        if (forceAuth) {
+          final authHeaders = await _useAuthHeaderMap();
+          log(authHeaders.toString());
+          response = await dioRequest.get(
+            url,
+            data: bodyData,
+            options: Options(
+              headers: authHeaders,
+            ),
+          );
+        } else {
+          response = await dioRequest.get(
+            url,
+            data: bodyData,
+            options: Options(
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            ),
+          );
+        }
 
         // Handle binary response
         if (isBinaryResponse) {
@@ -164,6 +173,7 @@ class ApiService extends getx.GetxService {
       bool forceAuth = false,
       bool isBypassErrorWidget = false}) async {
     try {
+      log(url.toString());
       log(bodyData.toString());
       late final Response response;
 
@@ -264,8 +274,7 @@ class ApiService extends getx.GetxService {
     String getUserToken = await mainBox.getData(HiveKeys.token);
     log('The token is :::::::::::::::::::::::::::::::::::: $getUserToken');
     return {
-      "Authorization": getUserToken,
-      'Content-Type': 'application/json',
+      "Authorization": 'Bearer $getUserToken',
     };
   }
 }

@@ -13,7 +13,7 @@ class LoginRepository {
 
   const LoginRepository(this.apiService, this.mainBox);
 
-  Future<void> login(
+  Future<void> onLogin(
       {required String email,
       required String password,
       required void Function(dynamic) onSuccess,
