@@ -22,7 +22,7 @@ class DailyTargetCards extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 16.h),
       margin: EdgeInsets.all(4.sp),
-      width: 158.w,
+      width: 150.w,
       decoration: BoxDecoration(
           color: AppColors.white,
           borderRadius: BorderRadius.circular(14.r),

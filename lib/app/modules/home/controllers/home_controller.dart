@@ -19,29 +19,28 @@ class HomeController extends GetxController {
   RxList<CategoryModel> category = <CategoryModel>[].obs;
 
   Future<void> getHomeData() async {
-    try {
-      isLoading.value = true;
-      await Get.find<HomeRepository>().onGetHomeData(
-        onSuccess: (homeData) {
-          dailyTargets.value = homeData.dailyTargets;
-          ChartMoodData chartMoodData = createChartMoodData(
-              homeData.graphs.digestionChart.weeklyMood.days,
-              homeData.graphs.digestionChart.weeklyMood.values);
-          log('The generated Chart data is this::::::::::::::::::: ${chartMoodData.moodData}');
-          chartData.value = chartMoodData.moodData;
-          recommendations.value = homeData.recommendations;
-          category.value = homeData.categories;
-          isLoading.value = false;
-        },
-        onError: () {
-          isLoading.value = false;
-        },
-      );
-    } catch (e) {
-      isLoading.value = false;
+    // try {
+    isLoading.value = true;
+    await Get.find<HomeRepository>().onGetHomeData(
+      onSuccess: (homeData) {
+        dailyTargets.value = homeData.dailyTargets;
+        ChartMoodData chartMoodData = createChartMoodData(
+            homeData.graphs.digestionChart.weeklyMood.days,
+            homeData.graphs.digestionChart.weeklyMood.values);
+        chartData.value = chartMoodData.moodData;
+        recommendations.value = homeData.recommendations;
+        category.value = homeData.categories;
+        isLoading.value = false;
+      },
+      onError: () {
+        isLoading.value = false;
+      },
+    );
+    // } catch (e) {
+    //   isLoading.value = false;
 
-      log(e.toString());
-    }
+    //   log(e.toString());
+    // }
   }
 
   @override

@@ -28,8 +28,13 @@ class LoginRepository {
         forceAuth: false,
         url: ApiEndpoints.login,
         onSuccess: (responseBody) {
-          mainBox.addData<String>(
-              HiveKeys.token, responseBody['data']['access_token']);
+          if (rememberMe) {
+            mainBox.addData<String>(
+                HiveKeys.tempToken, responseBody['data']['access_token']);
+          }
+                    mainBox.addData<String>(
+                HiveKeys.token, responseBody['data']['access_token']);
+
           onSuccess(responseBody);
         },
         onError: () {

@@ -17,20 +17,20 @@ class HomeRepository {
   Future<void> onGetHomeData(
       {required void Function(HomeModel) onSuccess,
       required void Function() onError}) async {
-    try {
-      apiService.getRequest(
-        forceAuth: true,
-        url: ApiEndpoints.getHome,
-        onSuccess: (responseBody) {
-          onSuccess(HomeModel.fromJson(responseBody['data']));
-        },
-        onError: () {
-          onError();
-        },
-      );
-    } catch (e) {
-      log(e.toString());
-      onError();
-    }
+    // try {
+    apiService.getRequest(
+      forceAuth: true,
+      url: ApiEndpoints.getHome,
+      onSuccess: (responseBody) {
+        onSuccess(HomeModel.fromJson(responseBody['data']));
+      },
+      onError: () {
+        onError();
+      },
+    );
+    // } catch (e) {
+    //   log(e.toString());
+    //   onError();
+    // }
   }
 }

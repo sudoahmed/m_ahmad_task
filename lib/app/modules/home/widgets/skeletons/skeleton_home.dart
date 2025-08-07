@@ -47,7 +47,7 @@ class SkeletonHome extends StatelessWidget {
                       VerticalSpacing(8.h),
                       SizedBox(
                         width: 1.sw,
-                        child: Row(
+                        child: const Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             DailyTargetCards(
@@ -68,7 +68,7 @@ class SkeletonHome extends StatelessWidget {
                       VerticalSpacing(12.h),
                       SizedBox(
                         width: 1.sw,
-                        child: Row(
+                        child: const Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             DailyTargetCards(

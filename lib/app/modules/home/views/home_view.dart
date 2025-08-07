@@ -1,4 +1,3 @@
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -54,7 +53,9 @@ class HomeView extends GetView<HomeController> {
                 Get.find<MainBox>()
                     .addData<String>(HiveKeys.token, '')
                     .then((_) {
-                  Get.offAllNamed(Routes.LOGIN);
+                  Get.find<MainBox>().addData<String>(HiveKeys.tempToken, '');
+
+                  return Get.offAllNamed(Routes.LOGIN);
                 });
               });
             },
@@ -303,12 +304,13 @@ class HomeView extends GetView<HomeController> {
                                         axisLine: const AxisLine(
                                             width:
                                                 0), // Remove axis line if needed
-                                        majorTickLines: const MajorTickLines(size: 0),
+                                        majorTickLines:
+                                            const MajorTickLines(size: 0),
                                         majorGridLines: MajorGridLines(
                                           width: 1,
                                           color: AppColors.cornFlorwerBlue
                                               .withOpacity(0.25),
-                                          dashArray:const  <double>  [
+                                          dashArray: const <double>[
                                             2,
                                             3
                                           ], // Creates dotted lines
@@ -336,7 +338,8 @@ class HomeView extends GetView<HomeController> {
                                                   .copyWith(fontSize: 16));
                                         },
                                       ),
-                                      title: const ChartTitle(text: 'Weekly Mood'),
+                                      title:
+                                          const ChartTitle(text: 'Weekly Mood'),
                                       tooltipBehavior:
                                           TooltipBehavior(enable: true),
                                       series: <CartesianSeries>[
@@ -378,8 +381,8 @@ class HomeView extends GetView<HomeController> {
                                           color: AppColors
                                               .robinsEggBlue, // Solid line color
                                           width: 2, // Line width
-                                          markerSettings:
-                                              const MarkerSettings(isVisible: false),
+                                          markerSettings: const MarkerSettings(
+                                              isVisible: false),
                                         ),
                                       ],
                                     ),

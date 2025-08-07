@@ -14,13 +14,14 @@ class AppPages {
 
   static late String INITIAL;
 
-  static Future<void> setInitialRoute() async {
+  static void setInitialRoute() {
     final mainBox = Get.find<MainBox>();
 
-    INITIAL = mainBox.getData(HiveKeys.token) != null ||
-            mainBox.getData(HiveKeys.token) != ''
-        ? _Paths.HOME
-        : _Paths.LOGIN;
+    INITIAL = mainBox.getData(HiveKeys.tempToken) == null
+        ? _Paths.LOGIN
+        : mainBox.getData(HiveKeys.tempToken) == ''
+            ? _Paths.LOGIN
+            : _Paths.HOME;
   }
 
   static final routes = [
