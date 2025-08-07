@@ -17,4 +17,8 @@ class AppColors {
   static const Color slateGray = Color(0xFF73858F);
   static const Color catskillWhite = Color(0xFFE4EFF4);
   static const Color hitGray = Color(0xFFA3AFB6);
+  static const Color cornFlorwerBlue = Color(0xFF6495ED);
+  static const Color robinsEggBlue = Color(0xFF04BFDA);
+  static const Color brightTurquoise = Color(0xFF0AE1EF);
 }
+

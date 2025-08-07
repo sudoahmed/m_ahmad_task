@@ -21,13 +21,14 @@ class ChartData {
 
 class HomeView extends GetView<HomeController> {
   HomeView({super.key});
-
   final List<ChartData> chartData = [
-    ChartData('Mon', 30),
-    ChartData('Tue', 42),
-    ChartData('Wed', 28),
-    ChartData('Thu', 35),
-    ChartData('Fri', 40),
+    ChartData('Mon', 35),
+    ChartData('Tue', 65),
+    ChartData('Wed', 85),
+    ChartData('Thu', 70),
+    ChartData('Fri', 90),
+    ChartData('Sat', 75),
+    ChartData('Sun', 50),
   ];
   @override
   Widget build(BuildContext context) {
@@ -196,6 +197,8 @@ class HomeView extends GetView<HomeController> {
                     carouselController: controller.carouselController,
                     itemCount: 3,
                     options: CarouselOptions(
+                      viewportFraction: 0.9,
+                      height: 410,
                       initialPage: controller.initalCarouselIndex,
                       onPageChanged: (index, reason) {
                         controller.currentCarouselIndex.value = index;
@@ -206,9 +209,7 @@ class HomeView extends GetView<HomeController> {
                         padding: EdgeInsets.all(16.sp),
                         margin: EdgeInsets.symmetric(horizontal: 8.w),
                         width: 327.w,
-                        height: 300.h,
                         decoration: BoxDecoration(
-                          color: AppColors.white,
                           borderRadius: BorderRadius.circular(14.r),
                           border: Border.all(
                               color: AppColors.slateGray.withOpacity(0.25),
@@ -275,6 +276,97 @@ class HomeView extends GetView<HomeController> {
                                 ),
                               ],
                             ),
+                            Container(
+                              width:
+                                  double.infinity, // Use full width of parent
+                              height: 327.h, // Adjust based on your needs
+                              child: SfCartesianChart(
+                                margin: EdgeInsets.zero,
+                                plotAreaBorderWidth: 0,
+                                primaryXAxis: CategoryAxis(
+                                  axisLine: AxisLine(
+                                      width: 0), // Remove axis line if needed
+                                  majorTickLines: MajorTickLines(size: 0),
+                                  majorGridLines: MajorGridLines(width: 0),
+                                ),
+                                primaryYAxis: NumericAxis(
+                                  minimum: 0,
+                                  maximum: 100,
+                                  interval: 25,
+                                  axisLine: AxisLine(
+                                      width: 0), // Remove axis line if needed
+                                  majorTickLines: MajorTickLines(size: 0),
+                                  majorGridLines: MajorGridLines(
+                                    width: 1,
+                                    color: AppColors.cornFlorwerBlue
+                                        .withOpacity(0.25),
+                                    dashArray: <double>[
+                                      2,
+                                      3
+                                    ], // Creates dotted lines
+                                  ),
+                                  axisLabelFormatter:
+                                      (AxisLabelRenderDetails details) {
+                                    String emoji = '';
+                                    num value = details.value;
+
+                                    if (value >= 100) {
+                                      emoji = '😍'; // Very happy (100+)
+                                    } else if (value >= 70) {
+                                      emoji = '😊'; // Happy (70-99)
+                                    } else if (value >= 50) {
+                                      emoji = '🥱'; // Neutral (50-69)
+                                    } else if (value >= 25) {
+                                      // Changed from > to >=
+                                      emoji = '😔'; // Sad (25-49)
+                                    } else {
+                                      emoji = '😡'; // Very sad (0-24)
+                                    }
+
+                                    return ChartAxisLabel(
+                                        emoji,
+                                        details.textStyle
+                                            .copyWith(fontSize: 16));
+                                  },
+                                ),
+                                title: ChartTitle(text: 'Weekly Sales'),
+                                tooltipBehavior: TooltipBehavior(enable: true),
+                                series: <CartesianSeries>[
+                                  SplineAreaSeries<ChartData, String>(
+                                    dataSource: chartData,
+                                    xValueMapper: (ChartData data, _) => data.x,
+                                    yValueMapper: (ChartData data, _) => data.y,
+                                    borderWidth: 0, // No border for this series
+                                    onCreateShader: (ShaderDetails details) {
+                                      return LinearGradient(
+                                        colors: [
+                                          AppColors.brightTurquoise.withOpacity(
+                                              0.8), // Top color (more opaque)
+                                          AppColors.brightTurquoise.withOpacity(
+                                              0.07), // Bottom color (more transparent)
+                                          AppColors.brightTurquoise.withOpacity(
+                                              0.0001), // Bottom color (more transparent)
+                                        ],
+                                        begin: Alignment.topCenter,
+                                        end: Alignment.bottomCenter,
+                                      ).createShader(details.rect);
+                                    },
+                                  ),
+
+                                  // Second series: Solid line on top (no fill)
+                                  SplineSeries<ChartData, String>(
+                                    dataSource: chartData,
+                                    xValueMapper: (ChartData data, _) => data.x,
+                                    yValueMapper: (ChartData data, _) => data.y,
+                                    color: AppColors
+                                        .robinsEggBlue, // Solid line color
+                                    width: 2, // Line width
+                                    markerSettings:
+                                        MarkerSettings(isVisible: false),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ],
                         ),
                       );
@@ -302,22 +394,6 @@ class HomeView extends GetView<HomeController> {
                         );
                       }),
                     ),
-                  ),
-                  SfCartesianChart(
-                    primaryXAxis: CategoryAxis(), // or DateTimeAxis()
-                    primaryYAxis: NumericAxis(),
-                    title: ChartTitle(text: 'Weekly Sales'),
-                    tooltipBehavior: TooltipBehavior(enable: true),
-                    series: <CartesianSeries>[
-                      SplineSeries<ChartData, String>(
-                        dataSource: chartData,
-                        xValueMapper: (ChartData data, _) => data.x,
-                        yValueMapper: (ChartData data, _) => data.y,
-                        color: Colors.orange,
-                        width: 2,
-                        markerSettings: MarkerSettings(isVisible: true),
-                      )
-                    ],
                   ),
 
                   // Container(
