@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -479,10 +480,19 @@ class HomeView extends GetView<HomeController> {
                           SizedBox(
                             height: 230.h,
                             child: ListView.builder(
+                              itemCount: controller.recommendations.length,
                               scrollDirection: Axis.horizontal,
                               itemBuilder: (context, index) {
                                 return RecommendationsCardWidget(
                                   index: index,
+                                  heading:
+                                      controller.recommendations[index].heading,
+                                  image:
+                                      controller.recommendations[index].image,
+                                  plan: controller
+                                      .recommendations[index].dietPlan,
+                                  duration: controller
+                                      .recommendations[index].durationInDays,
                                 );
                               },
                             ),
@@ -499,7 +509,7 @@ class HomeView extends GetView<HomeController> {
                                   style: textTheme.titleLarge,
                                 ),
                                 GridView.builder(
-                                    itemCount: 4,
+                                    itemCount: controller.category.length,
                                     physics:
                                         const NeverScrollableScrollPhysics(),
                                     shrinkWrap: true,
@@ -508,59 +518,17 @@ class HomeView extends GetView<HomeController> {
                                             childAspectRatio: 0.79,
                                             crossAxisCount: 2),
                                     itemBuilder: (context, index) {
-                                      return Container(
-                                        padding: EdgeInsetsGeometry.all(12.sp),
-                                        margin: EdgeInsets.all(8.sp),
-                                        width: 160.w,
-                                        decoration: BoxDecoration(
-                                            color: AppColors.white,
-                                            borderRadius:
-                                                BorderRadius.circular(14.r),
-                                            boxShadow: [
-                                              BoxShadow(
-                                                blurRadius: 10,
-                                                color: AppColors.black
-                                                    .withOpacity(0.1),
-                                                offset: const Offset(0, 9),
-                                              )
-                                            ],
-                                            border: Border.all(
-                                              color: AppColors.hitGray
-                                                  .withOpacity(0.25),
-                                            )),
-                                        child: Column(
-                                          children: [
-                                            Container(
-                                              padding: EdgeInsets.all(15.sp),
-                                              width: 94.w,
-                                              height: 94.h,
-                                              decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                color: AppColors.christi
-                                                    .withOpacity(0.4),
-                                              ),
-                                              child:
-                                                  Image.asset(AppImages.recipe),
-                                            ),
-                                            VerticalSpacing(8.h),
-                                            Text(
-                                              'Recipe',
-                                              style: textTheme.titleSmall!
-                                                  .copyWith(
-                                                      fontSize: 18.sp,
-                                                      fontWeight:
-                                                          FontWeight.w600),
-                                            ),
-                                            Text(
-                                              textAlign: TextAlign.center,
-                                              'Cook, Eat, Log, Repeat',
-                                              style: textTheme.labelSmall!
-                                                  .copyWith(
-                                                      fontSize: 11.sp,
-                                                      color: AppColors.hitGray),
-                                            )
-                                          ],
-                                        ),
+                                      return CategoriesCardWidget(
+                                        name: controller.category[index].name,
+                                        description: controller
+                                            .category[index].description,
+                                        image: controller.category[index].image,
+                                        color: [
+                                          AppColors.fern.withOpacity(0.4),
+                                          AppColors.corn.withOpacity(0.4),
+                                          AppColors.flamingo.withOpacity(0.4),
+                                          AppColors.red.withOpacity(0.4),
+                                        ][index % 4],
                                       );
                                     }),
                                 VerticalSpacing(32.h),
@@ -580,6 +548,71 @@ class HomeView extends GetView<HomeController> {
                   ),
                 ),
         ));
+  }
+}
+
+class CategoriesCardWidget extends StatelessWidget {
+  const CategoriesCardWidget({
+    super.key,
+    required this.name,
+    required this.description,
+    required this.image,
+    required this.color,
+  });
+
+  final String name, description, image;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    final TextTheme textTheme = Theme.of(context).textTheme;
+    return Container(
+      padding: EdgeInsetsGeometry.all(12.sp),
+      margin: EdgeInsets.all(8.sp),
+      width: 160.w,
+      decoration: BoxDecoration(
+          color: AppColors.white,
+          borderRadius: BorderRadius.circular(14.r),
+          boxShadow: [
+            BoxShadow(
+              blurRadius: 10,
+              color: AppColors.black.withOpacity(0.1),
+              offset: const Offset(0, 9),
+            )
+          ],
+          border: Border.all(
+            color: AppColors.hitGray.withOpacity(0.25),
+          )),
+      child: Column(
+        children: [
+          Container(
+            padding: EdgeInsets.all(15.sp),
+            width: 94.w,
+            height: 94.h,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: color,
+            ),
+            child: CachedNetworkImage(
+              imageUrl: image,
+              fit: BoxFit.cover,
+            ),
+          ),
+          VerticalSpacing(8.h),
+          Text(
+            name,
+            style: textTheme.titleSmall!
+                .copyWith(fontSize: 18.sp, fontWeight: FontWeight.w600),
+          ),
+          Text(
+            textAlign: TextAlign.center,
+            description,
+            style: textTheme.labelSmall!
+                .copyWith(fontSize: 11.sp, color: AppColors.hitGray),
+          )
+        ],
+      ),
+    );
   }
 }
 
@@ -706,7 +739,12 @@ class SkeletonHome extends StatelessWidget {
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
                       return RecommendationsCardWidget(
+                        heading: 'Increase protein',
                         index: index,
+                        duration: 25,
+                        image:
+                            'https://media.istockphoto.com/id/1409329028/vector/no-picture-available-placeholder-thumbnail-icon-illustration-design.jpg?s=612x612&w=0&k=20&c=_zOuJu755g2eEUioiOUdz_mHKJQJn-tDgIAhQzyeKUQ=',
+                        plan: 'Daily',
                       );
                     },
                   ),
@@ -805,9 +843,16 @@ class RecommendationsCardWidget extends StatelessWidget {
   RecommendationsCardWidget({
     super.key,
     required this.index,
+    required this.heading,
+    required this.image,
+    required this.plan,
+    required this.duration,
   });
 
   final int index;
+
+  final String heading, image, plan;
+  final int duration;
 
   @override
   Widget build(BuildContext context) {
@@ -832,19 +877,18 @@ class RecommendationsCardWidget extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            clipBehavior: Clip.hardEdge,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-              topRight: Radius.circular(16.r),
-              topLeft: Radius.circular(16.r),
-            )),
-            width: 314.w,
-            height: 158.h,
-            child: Image.asset(
-              AppImages.burrito,
-              fit: BoxFit.cover,
-            ),
-          ),
+              clipBehavior: Clip.hardEdge,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                topRight: Radius.circular(16.r),
+                topLeft: Radius.circular(16.r),
+              )),
+              width: 314.w,
+              height: 158.h,
+              child: CachedNetworkImage(
+                imageUrl: image,
+                fit: BoxFit.cover,
+              )),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
             child: Row(
@@ -854,12 +898,12 @@ class RecommendationsCardWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Increase Protein',
+                      heading,
                       style: textTheme.titleSmall!.copyWith(
                           fontSize: 15.sp, fontWeight: FontWeight.w600),
                     ),
                     Text(
-                      '28 Days | Daily',
+                      '$duration Days | $plan',
                       style: textTheme.labelSmall!.copyWith(
                         color: AppColors.hitGray,
                       ),

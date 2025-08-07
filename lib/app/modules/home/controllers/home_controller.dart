@@ -15,6 +15,8 @@ class HomeController extends GetxController {
 
   RxList<DailyTarget> dailyTargets = <DailyTarget>[].obs;
   RxList<DayValue> chartData = <DayValue>[].obs;
+  RxList<Recommendation> recommendations = <Recommendation>[].obs;
+  RxList<CategoryModel> category = <CategoryModel>[].obs;
 
   Future<void> getHomeData() async {
     try {
@@ -27,6 +29,8 @@ class HomeController extends GetxController {
               homeData.graphs.digestionChart.weeklyMood.values);
           log('The generated Chart data is this::::::::::::::::::: ${chartMoodData.moodData}');
           chartData.value = chartMoodData.moodData;
+          recommendations.value = homeData.recommendations;
+          category.value = homeData.categories;
           // log('Home data fetched successfully: ${homeData.toJson()}');
           isLoading.value = false;
         },
