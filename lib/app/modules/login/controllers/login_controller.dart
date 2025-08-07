@@ -33,6 +33,7 @@ class LoginController extends GetxController {
       Get.find<LoginRepository>().onLogin(
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
+        rememberMe: isRememberMe.value,
         onSuccess: (responseBody) {
           onSuccess(responseBody);
           Get.close(1);
@@ -47,20 +48,5 @@ class LoginController extends GetxController {
       log(e.toString());
       onError();
     }
-  }
-
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
   }
 }

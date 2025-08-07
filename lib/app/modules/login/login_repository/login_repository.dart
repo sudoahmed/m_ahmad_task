@@ -16,6 +16,7 @@ class LoginRepository {
   Future<void> onLogin(
       {required String email,
       required String password,
+      bool rememberMe = false,
       required void Function(dynamic) onSuccess,
       required void Function() onError}) async {
     try {

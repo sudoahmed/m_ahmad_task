@@ -31,7 +31,6 @@ class HomeController extends GetxController {
           chartData.value = chartMoodData.moodData;
           recommendations.value = homeData.recommendations;
           category.value = homeData.categories;
-          // log('Home data fetched successfully: ${homeData.toJson()}');
           isLoading.value = false;
         },
         onError: () {
