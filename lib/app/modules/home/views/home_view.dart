@@ -22,13 +22,13 @@ class ChartData {
 class HomeView extends GetView<HomeController> {
   HomeView({super.key});
   final List<ChartData> chartData = [
-    ChartData('Mon', 35),
-    ChartData('Tue', 65),
-    ChartData('Wed', 85),
-    ChartData('Thu', 70),
-    ChartData('Fri', 90),
+    ChartData('Sun', 40),
+    ChartData('Mon', 65),
+    ChartData('Tue', 45),
+    ChartData('Wed', 70),
+    ChartData('Thu', 85),
+    ChartData('Fri', 75),
     ChartData('Sat', 75),
-    ChartData('Sun', 50),
   ];
   @override
   Widget build(BuildContext context) {
@@ -395,6 +395,107 @@ class HomeView extends GetView<HomeController> {
                       }),
                     ),
                   ),
+                  VerticalSpacing(28.h),
+                  Stack(
+                    children: [
+                      SvgPicture.asset(AppIcons.banner),
+                      Positioned(
+                        // top: 0.h,
+                        right: 8.w,
+                        child: Image.asset(
+                          AppImages.appleCartoon,
+                          width: 65.w,
+                          height: 48.h,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ],
+                  ),
+                  VerticalSpacing(8.h),
+                  Center(
+                    child: Text('Say GoodBye to Ads, By Premium',
+                        style: textTheme.labelSmall!
+                            .copyWith(color: AppColors.hitGray)),
+                  ),
+                  VerticalSpacing(16.h),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 24.w),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Recommendation',
+                          style: textTheme.titleLarge,
+                        ),
+                        CupertinoButton(
+                          padding: EdgeInsets.zero,
+                          minSize: 0.0001,
+                          onPressed: () {},
+                          child: Text(
+                            'View All',
+                            style: textTheme.titleLarge!.copyWith(
+                                color: AppColors.primary,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  VerticalSpacing(8.h),
+                  SizedBox(
+                    height: 230.h,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index) {
+                        return RecommendationsCardWidget(
+                          index: index,
+                        );
+                      },
+                    ),
+                  ),
+                  VerticalSpacing(8.h),
+                  Container(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 24.w, vertical: 8.h),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Discover',
+                          style: textTheme.titleLarge,
+                        ),
+                        GridView.builder(
+                            itemCount: 4,
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2),
+                            itemBuilder: (context, index) {
+                              return Container(
+                                padding: EdgeInsetsGeometry.all(12.sp),
+                                margin: EdgeInsets.all(8.sp),
+                                width: 160.w,
+                                height: 185.h,
+                                decoration: BoxDecoration(
+                                    color: AppColors.white,
+                                    borderRadius: BorderRadius.circular(14.r),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        blurRadius: 10,
+                                        color: AppColors.black.withOpacity(0.1),
+                                        offset: const Offset(0, 9),
+                                      )
+                                    ],
+                                    border: Border.all(
+                                      color:
+                                          AppColors.hitGray.withOpacity(0.25),
+                                    )),
+                              );
+                            })
+                      ],
+                    ),
+                  ),
 
                   // Container(
                   //   color: Colors.green,
@@ -407,6 +508,95 @@ class HomeView extends GetView<HomeController> {
             ),
           ),
         ));
+  }
+}
+
+class RecommendationsCardWidget extends StatelessWidget {
+  RecommendationsCardWidget({
+    super.key,
+    required this.index,
+  });
+
+  final int index;
+
+  @override
+  Widget build(BuildContext context) {
+    final TextTheme textTheme = Theme.of(context).textTheme;
+    return Container(
+      height: 228.h,
+      width: 314.w,
+      margin: EdgeInsets.only(right: 12.w, left: index == 0 ? 24.w : 0),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16.r),
+          color: AppColors.white,
+          border: Border.all(
+            color: AppColors.hitGray.withOpacity(0.25),
+            width: 1,
+          ),
+          boxShadow: [
+            BoxShadow(
+                color: AppColors.black.withOpacity(0.06),
+                blurRadius: 22,
+                offset: Offset(8, 9))
+          ]),
+      child: Column(
+        children: [
+          Container(
+            clipBehavior: Clip.hardEdge,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+              topRight: Radius.circular(16.r),
+              topLeft: Radius.circular(16.r),
+            )),
+            width: 314.w,
+            height: 158.h,
+            child: Image.asset(
+              AppImages.burrito,
+              fit: BoxFit.cover,
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Increase Protein',
+                      style: textTheme.titleSmall!.copyWith(
+                          fontSize: 15.sp, fontWeight: FontWeight.w600),
+                    ),
+                    Text(
+                      '28 Days | Daily',
+                      style: textTheme.labelSmall!.copyWith(
+                        color: AppColors.hitGray,
+                      ),
+                    ),
+                  ],
+                ),
+                CupertinoButton(
+                  onPressed: () {},
+                  padding: EdgeInsets.zero,
+                  minSize: 0.0001,
+                  child: Container(
+                    padding: EdgeInsets.all(8.sp),
+                    width: 38.w,
+                    height: 38.h,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: AppColors.primary.withOpacity(0.52),
+                    ),
+                    child: SvgPicture.asset(AppIcons.bookmark),
+                  ),
+                )
+              ],
+            ),
+          )
+        ],
+      ),
+    );
   }
 }
 
