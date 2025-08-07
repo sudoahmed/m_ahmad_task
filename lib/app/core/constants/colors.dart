@@ -20,5 +20,7 @@ class AppColors {
   static const Color cornFlorwerBlue = Color(0xFF6495ED);
   static const Color robinsEggBlue = Color(0xFF04BFDA);
   static const Color brightTurquoise = Color(0xFF0AE1EF);
+  static const Color guardsmanRed = Color(0xFFCC0000);
+  static const Color fern = Color(0xFF5CB85C);
 }
 
