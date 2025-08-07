@@ -10,6 +10,7 @@ import 'package:m_ahmad_task/app/core/constants/colors.dart';
 import 'package:m_ahmad_task/app/core/constants/hive_keys.dart';
 import 'package:m_ahmad_task/app/core/services/hive_service.dart';
 import 'package:m_ahmad_task/app/core/utils/spacing.dart';
+import 'package:m_ahmad_task/app/data/models/charts/chart_helper_model.dart';
 import 'package:m_ahmad_task/app/modules/home/widgets/category_card_widget.dart';
 import 'package:m_ahmad_task/app/modules/home/widgets/daily_target_widget.dart';
 import 'package:m_ahmad_task/app/modules/home/widgets/recommendations_card_widget.dart';
@@ -34,6 +35,7 @@ class HomeView extends GetView<HomeController> {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 70,
+        scrolledUnderElevation: 0,
         backgroundColor: AppColors.catskillWhite.withOpacity(0.4),
         title: SvgPicture.asset(
           AppIcons.nutriLogoVector,
@@ -197,9 +199,10 @@ class HomeView extends GetView<HomeController> {
                           carouselController: controller.carouselController,
                           itemCount: 3,
                           options: CarouselOptions(
+                            autoPlay: true,
                             viewportFraction: 0.9,
                             height: 410,
-                            initialPage: controller.initalCarouselIndex,
+                            initialPage: controller.initialCarouselIndex.value,
                             onPageChanged: (index, reason) {
                               controller.currentCarouselIndex.value = index;
                             },
