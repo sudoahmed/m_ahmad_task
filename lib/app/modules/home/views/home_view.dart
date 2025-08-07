@@ -181,58 +181,17 @@ class HomeView extends GetView<HomeController> {
                                         amount: controller
                                             .dailyTargets[index].achievedTarget
                                             .toString(),
-                                        colofulFigures: AppColors.corn,
+                                        colofulFigures: [
+                                          AppColors.corn,
+                                          AppColors.flamingo,
+                                          AppColors.christi,
+                                          AppColors.blueRibbon,
+                                        ][index % 4],
                                         perUnit: controller
                                             .dailyTargets[index].totalTarget
                                             .toString(),
                                       );
                                     }),
-                                Visibility(
-                                  visible: false,
-                                  child: SizedBox(
-                                    width: 1.sw,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        DailyTargetCards(
-                                          cardTitle: 'Carbs',
-                                          amount: '23',
-                                          colofulFigures: AppColors.corn,
-                                          perUnit: '123g',
-                                        ),
-                                        DailyTargetCards(
-                                          cardTitle: 'Protien',
-                                          amount: '144',
-                                          colofulFigures: AppColors.flamingo,
-                                          perUnit: '100g',
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                VerticalSpacing(12.h),
-                                SizedBox(
-                                  width: 1.sw,
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      DailyTargetCards(
-                                        cardTitle: 'Fat',
-                                        amount: '56',
-                                        colofulFigures: AppColors.christi,
-                                        perUnit: '74g',
-                                      ),
-                                      DailyTargetCards(
-                                        cardTitle: 'Calories',
-                                        amount: '1548',
-                                        colofulFigures: AppColors.blueRibbon,
-                                        perUnit: '2000',
-                                      ),
-                                    ],
-                                  ),
-                                ),
                               ],
                             ),
                           ),
@@ -353,8 +312,8 @@ class HomeView extends GetView<HomeController> {
                                         ),
                                         primaryYAxis: NumericAxis(
                                           minimum: 0,
-                                          maximum: 100,
-                                          interval: 25,
+                                          maximum: 5,
+                                          interval: 1,
                                           axisLine: AxisLine(
                                               width:
                                                   0), // Remove axis line if needed
@@ -374,17 +333,16 @@ class HomeView extends GetView<HomeController> {
                                             String emoji = '';
                                             num value = details.value;
 
-                                            if (value >= 100) {
-                                              emoji = '😍'; // Very happy (100+)
-                                            } else if (value >= 70) {
-                                              emoji = '😊'; // Happy (70-99)
-                                            } else if (value >= 50) {
-                                              emoji = '🥱'; // Neutral (50-69)
-                                            } else if (value >= 25) {
-                                              // Changed from > to >=
-                                              emoji = '😔'; // Sad (25-49)
-                                            } else {
-                                              emoji = '😡'; // Very sad (0-24)
+                                            if (value >= 5) {
+                                              emoji = '😍';
+                                            } else if (value >= 4) {
+                                              emoji = '😊';
+                                            } else if (value >= 3) {
+                                              emoji = '🥱';
+                                            } else if (value >= 2) {
+                                              emoji = '😔';
+                                            } else if (value >= 1) {
+                                              emoji = '😡';
                                             }
 
                                             return ChartAxisLabel(
@@ -393,16 +351,16 @@ class HomeView extends GetView<HomeController> {
                                                     .copyWith(fontSize: 16));
                                           },
                                         ),
-                                        title: ChartTitle(text: 'Weekly Sales'),
+                                        title: ChartTitle(text: 'Weekly Mood'),
                                         tooltipBehavior:
                                             TooltipBehavior(enable: true),
                                         series: <CartesianSeries>[
-                                          SplineAreaSeries<ChartData, String>(
-                                            dataSource: chartData,
-                                            xValueMapper: (ChartData data, _) =>
-                                                data.x,
-                                            yValueMapper: (ChartData data, _) =>
-                                                data.y,
+                                          SplineAreaSeries<DayValue, String>(
+                                            dataSource: controller.chartData,
+                                            xValueMapper: (DayValue data, _) =>
+                                                data.day,
+                                            yValueMapper: (DayValue data, _) =>
+                                                data.value,
                                             borderWidth:
                                                 0, // No border for this series
                                             onCreateShader:
@@ -426,12 +384,12 @@ class HomeView extends GetView<HomeController> {
                                           ),
 
                                           // Second series: Solid line on top (no fill)
-                                          SplineSeries<ChartData, String>(
-                                            dataSource: chartData,
-                                            xValueMapper: (ChartData data, _) =>
-                                                data.x,
-                                            yValueMapper: (ChartData data, _) =>
-                                                data.y,
+                                          SplineSeries<DayValue, String>(
+                                            dataSource: controller.chartData,
+                                            xValueMapper: (DayValue data, _) =>
+                                                data.day,
+                                            yValueMapper: (DayValue data, _) =>
+                                                data.value,
                                             color: AppColors
                                                 .robinsEggBlue, // Solid line color
                                             width: 2, // Line width
@@ -477,7 +435,7 @@ class HomeView extends GetView<HomeController> {
                               SvgPicture.asset(AppIcons.banner),
                               Positioned(
                                 // top: 0.h,
-                                right: 8.w,
+                                right: 15.w,
                                 child: Image.asset(
                                   AppImages.appleCartoon,
                                   width: 65.w,
