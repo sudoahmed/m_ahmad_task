@@ -8,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:m_ahmad_task/app/core/constants/colors.dart';
 import 'package:m_ahmad_task/app/core/services/theme_service.dart';
+import 'package:m_ahmad_task/dependency_injection.dart';
 
 import 'app/routes/app_pages.dart';
 
@@ -15,13 +16,12 @@ void main() async {
   runZonedGuarded(
     () async {
       WidgetsFlutterBinding.ensureInitialized();
-      await Get.putAsync<ThemeService>(() async => ThemeService().init());
-
+      await initServicesAndRepositories();
       await SystemChrome.setPreferredOrientations(
           [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
       SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(
+        const SystemUiOverlayStyle(
           statusBarColor: AppColors.secondary,
           statusBarIconBrightness: Brightness.dark,
           systemNavigationBarColor: AppColors.secondary,

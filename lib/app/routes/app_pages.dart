@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:m_ahmad_task/app/core/constants/hive_keys.dart';
+import 'package:m_ahmad_task/app/core/services/hive_service.dart';
 
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
@@ -10,7 +12,16 @@ part 'app_routes.dart';
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.HOME;
+  static late String INITIAL;
+
+  static Future<void> setInitialRoute() async {
+    final mainBox = Get.find<MainBox>();
+
+    INITIAL = mainBox.getData(HiveKeys.token) != null ||
+            mainBox.getData(HiveKeys.token) == ''
+        ? _Paths.LOGIN
+        : _Paths.HOME;
+  }
 
   static final routes = [
     GetPage(

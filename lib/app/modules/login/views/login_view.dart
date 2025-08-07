@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,6 +8,8 @@ import 'package:get/get.dart';
 import 'package:m_ahmad_task/app/core/components/dialogs/wait_dialog.dart';
 import 'package:m_ahmad_task/app/core/components/widgets/text_field_component.dart';
 import 'package:m_ahmad_task/app/core/constants/colors.dart';
+import 'package:m_ahmad_task/app/core/constants/endpoints.dart';
+import 'package:m_ahmad_task/app/core/services/api_service.dart';
 import 'package:m_ahmad_task/app/core/utils/spacing.dart';
 import 'package:m_ahmad_task/app/core/utils/validators.dart';
 import 'package:m_ahmad_task/app/routes/app_pages.dart';
@@ -130,9 +134,11 @@ class LoginView extends GetView<LoginController> {
                       ),
                     ),
                     onPressed: () {
-                      // WaitDialog().callBasicLoaderDialog(
-                      //     context: context, loaderText: 'Logging in...');
-                      Get.toNamed(Routes.HOME);
+                      controller.login(
+                        context: context,
+                        onSuccess: (responseBody) {},
+                        onError: () {},
+                      );
                     }),
               ],
             ),

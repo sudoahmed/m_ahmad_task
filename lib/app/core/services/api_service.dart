@@ -182,6 +182,11 @@ class ApiService extends getx.GetxService {
           response = await dioRequest.post(
             url,
             data: bodyData,
+            options: Options(
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            ),
           );
         }
 
@@ -221,6 +226,7 @@ class ApiService extends getx.GetxService {
         }
       } else {
         // If we have a response, handle it as usual
+        log(e.response.toString());
         ApiErrorHandlers.handleHttpErrors(
           errorStatusCode: e.response?.statusCode,
           apiErrorMessage: e.response?.data["message"],
@@ -258,7 +264,7 @@ class ApiService extends getx.GetxService {
     String getUserToken = await mainBox.getData(HiveKeys.token);
     log('The token is :::::::::::::::::::::::::::::::::::: $getUserToken');
     return {
-      "token": getUserToken,
+      "Authorization": getUserToken,
       'Content-Type': 'application/json',
     };
   }

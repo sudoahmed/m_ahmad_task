@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +9,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:m_ahmad_task/app/core/constants/app_assets.dart';
 import 'package:m_ahmad_task/app/core/constants/colors.dart';
+import 'package:m_ahmad_task/app/core/constants/hive_keys.dart';
+import 'package:m_ahmad_task/app/core/services/hive_service.dart';
 import 'package:m_ahmad_task/app/core/utils/spacing.dart';
+import 'package:m_ahmad_task/app/routes/app_pages.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../controllers/home_controller.dart';
@@ -34,6 +39,11 @@ class HomeView extends GetView<HomeController> {
   Widget build(BuildContext context) {
     final TextTheme textTheme = Theme.of(context).textTheme;
     return Scaffold(
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            log(Get.find<MainBox>().getData<String>(HiveKeys.token).toString());
+          },
+        ),
         appBar: AppBar(
           toolbarHeight: 70,
           backgroundColor: AppColors.catskillWhite.withOpacity(0.4),
@@ -46,7 +56,11 @@ class HomeView extends GetView<HomeController> {
             CupertinoButton(
               padding: EdgeInsets.zero,
               minSize: 0.0001,
-              onPressed: () {},
+              onPressed: () {
+                Get.find<MainBox>().clearBox().then((_) {
+                  Get.offAllNamed(Routes.LOGIN);
+                });
+              },
               child: Container(
                 margin: EdgeInsets.symmetric(horizontal: 10),
                 width: 22.w,
